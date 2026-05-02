@@ -51,7 +51,7 @@ bool User::validatePassword(const string& pwd) {
 
 void User::forgotPassword(User* users[], const int& size) {
     string email;
-    cout << "\n====== FORGOT PASSWORD ======\n";
+    cout << " FORGOT PASSWORD "<<endl;
     cout << "Enter registered email: ";
     cin >> email;
     if (!validateEmail(email)) { cout << "Cancelled.\n"; return; }
@@ -76,13 +76,13 @@ void User::forgotPassword(User* users[], const int& size) {
 
 void User::registerUsers(User* users[], int& size) {
     int memberCount, adminCount;
-    cout << "\n====== REGISTER USERS ======\n";
+    cout << "REGISTER USERS "<<endl;
     cout << "How many Members: "; cin >> memberCount;
     cout << "How many Admins : "; cin >> adminCount;
 
     for (int i = 0; i < memberCount; i++) {
         string firstName, lastName, email, password;
-        cout << "\n-- Member " << (i + 1) << " --\n";
+        cout << "Member " << (i + 1) << endl;
         cout << "First Name: "; cin >> firstName;
         cout << "Last Name : "; cin >> lastName;
         string name = firstName + " " + lastName;
@@ -106,7 +106,7 @@ void User::registerUsers(User* users[], int& size) {
 
     for (int i = 0; i < adminCount; i++) {
         string firstName, lastName, email, password, adminCode;
-        cout << "\n-- Admin " << (i + 1) << " --\n";
+        cout << " Admin " << (i + 1) << endl;
         cout << "First Name: "; cin >> firstName;
         cout << "Last Name : "; cin >> lastName;
         string name = firstName + " " + lastName;
@@ -133,7 +133,7 @@ void User::registerUsers(User* users[], int& size) {
 
 void User::loginSystem(User* users[], int& size) {
     string email, password;
-    cout << "\n====== GYM LOGIN ======\n";
+    cout << " GYM LOGIN "<<endl;
     cout << "Email: "; cin >> email;
     if (!validateEmail(email)) { cout << "Login cancelled.\n"; return; }
     cout << "Password: "; cin >> password;
@@ -151,7 +151,7 @@ void User::loginSystem(User* users[], int& size) {
             return;
         }
     }
-    cout << "No account found.\n";
+    cout << "No account found."<<endl;
 }
 
 Member::Member(string n, string e, string p)
@@ -174,26 +174,26 @@ Member::~Member() {
 
 void Member::displayInfo() const {
     User::displayInfo();
-    cout << "ID     : " << memberID << "\n";
-    cout << "Joined : " << joinDate.toString() << "\n";
-    cout << "Plan   : " << subscriptionType << "\n";
-    cout << "Status : " << feeStatus << "\n";
+    cout << "ID     : " << memberID << endl;
+    cout << "Joined : " << joinDate.toString() << endl;
+    cout << "Plan   : " << subscriptionType << endl;
+    cout << "Status : " << feeStatus << endl;
     if (personalTrainer)
-        cout << "Trainer: " << personalTrainer->getName() << "\n";
+        cout << "Trainer: " << personalTrainer->getName() << endl;
 }
 
 bool Member::login(string inputEmail, string inputPassword) {
     if (User::login(inputEmail, inputPassword)) {
-        cout << "\n  OK Member login successful! Welcome, " << name << "\n";
+        cout << " OK Member login successful! Welcome, " << name << endl;
         return true;
     }
-    cout << "Incorrect email or password.\n";
+    cout << "Incorrect email or password."<<endl;
     return false;
 }
 
 void Member::updateProfile(User* users[], int size) {
     int choice;
-    cout << "\n----- PROFILE SETTINGS -----\n";
+    cout << " PROFILE SETTINGS "<<endl;
     cout << "1. Change Email\n2. Change Password\n3. Back\nChoice: ";
     cin >> choice;
 
@@ -209,7 +209,7 @@ void Member::updateProfile(User* users[], int size) {
         if (User::validatePassword(newPass)) { password = newPass; changed = true; }
     }
     if (changed) {
-        cout << "Update successful. Syncing...\n";
+        cout << "Update successful. Syncing"<<endl;
         FileData::updateFileAfterRemoval(users, size);
     }
 }
@@ -217,7 +217,7 @@ void Member::updateProfile(User* users[], int size) {
 void Member::memberPortal(User* users[], int size) {
     int choice;
     do {
-        cout << "\n===== MEMBER PORTAL (" << name << ") =====\n";
+        cout << "\n MEMBER PORTAL (" << name << ") \n";
         cout << "1. View Profile\n2. Edit Credentials\n3. Logout\nChoice: ";
         cin >> choice;
         if (choice == 1) displayInfo();
@@ -306,7 +306,7 @@ void Admin::updateMember(User* users[], int size) const {
     if (!found) { cout << "Member not found.\n"; return; }
 
     int choice;
-    cout << "\n-- Update Member: " << found->getName() << " --\n";
+    cout << "Update Member: " << found->getName() << endl;
     cout << "1. Fee Status\n2. Subscription Type\n3. Back\nChoice: ";
     cin >> choice;
 
@@ -314,13 +314,13 @@ void Admin::updateMember(User* users[], int size) const {
         string status;
         cout << "New fee status (Paid/Unpaid/Pending): "; cin >> status;
         found->setFeeStatus(status);
-        cout << "Fee status updated.\n";
+        cout << "Fee status updated."<<endl;
     }
     else if (choice == 2) {
         string subType;
         cout << "New subscription (Basic/Premium/Unique): "; cin >> subType;
         found->setSubType(subType);
-        cout << "Subscription updated.\n";
+        cout << "Subscription updated."<<endl;
     }
     FileData::updateFileAfterRemoval(users, size);
 }
@@ -354,7 +354,7 @@ void Admin::removeMember(User* users[], int& size) const {
 }
 
 void Admin::viewMembers(User* users[], int size) const {
-    cout << "\n===== All Members =====\n";
+    cout << "All Members "<<endl;
     int count = 0;
     for (int i = 0; i < size; i++) {
         if (users[i]->getRole() == "Member") {
@@ -363,14 +363,14 @@ void Admin::viewMembers(User* users[], int size) const {
             count++;
         }
     }
-    if (count == 0) cout << "No members registered yet.\n";
-    else cout << "\nTotal Members: " << count << "\n";
+    if (count == 0) cout << "No members registered yet."<<endl;
+    else cout << "\nTotal Members: " << count << endl;
 }
 
 void Admin::adminPanel(User* users[], int& size) const {
     int choice;
     do {
-        cout << "\n===== ADMIN PANEL (" << name << ") =====\n";
+        cout << "ADMIN PANEL (" << name << ")"<<endl;
         cout << "1. Add Member\n";
         cout << "2. Remove Member\n";
         cout << "3. View All Members\n";
